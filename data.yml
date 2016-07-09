@@ -26,6 +26,36 @@ _parts:
     geometry_field: "way"
     extent: "-20037508,-20037508,20037508,20037508"
 Layer:
+  - id: water
+    geometry: polygon
+    <<: *extents
+    Datasource:
+      <<: *osm2pgsql
+      table: |-
+        (SELECT
+            way
+          FROM water_areas
+          WHERE way_area > 0.01*!pixel_width!::real*!pixel_height!::real
+        ) AS water
+  - id: waterway
+    geometry: linestring
+    <<: *extents
+    Datasource:
+      <<: *osm2pgsql
+      table: |-
+        (SELECT
+            way,
+            waterway::text AS class
+            -- todo: intermittent streams
+          FROM waterways
+          WHERE waterway IN ('river')
+            OR (z(!scale_denominator!) >= 7 AND waterway IN ('canal'))
+            OR (z(!scale_denominator!) >= 11 AND waterway IN ('stream'))
+            OR (z(!scale_denominator!) >= 13 AND waterway IN ('drain', 'ditch'))
+          ORDER BY layer
+        ) AS waterways
+    properties:
+      minzoom: 8
   - id: building
     geometry: polygon
     <<: *extents
