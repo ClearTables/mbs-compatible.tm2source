@@ -52,10 +52,9 @@ Layer:
             waterway::text AS class
             -- todo: intermittent streams
           FROM waterways
-          WHERE waterway IN ('river')
-            OR (z(!scale_denominator!) >= 7 AND waterway IN ('canal'))
-            OR (z(!scale_denominator!) >= 11 AND waterway IN ('stream'))
-            OR (z(!scale_denominator!) >= 13 AND waterway IN ('drain', 'ditch'))
+          WHERE waterway IN ('river', 'canal')
+            OR (z(!scale_denominator!) >= 12 AND waterway IN ('stream'))
+            OR (z(!scale_denominator!) >= 14 AND waterway IN ('drain', 'ditch'))
           ORDER BY layer
         ) AS waterways
     properties:
