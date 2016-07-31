@@ -36,6 +36,10 @@ Layer:
             way
           FROM water_areas
           WHERE way_area > 0.01*!pixel_width!::real*!pixel_height!::real
+        UNION ALL
+        SELECT
+            way
+          FROM ocean
         ) AS water
   - id: waterway
     geometry: linestring

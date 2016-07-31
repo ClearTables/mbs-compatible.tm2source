@@ -12,4 +12,6 @@ This is a project to test [ClearTables](https://github.com/ClearTables/ClearTabl
 
 2. Import data with [ClearTables](https://github.com/ClearTables/ClearTables)
 
-3. Set the `source` of the tm2 project to point at the location of this project on disk, e.g. `source: "tmsource:///home/osm/mbs-compatible.tm2source"`
+3. Load shapefiles into the database with `PGDATABASE=gis ./get-shapefiles.sh`
+
+. Set the `source` of the tm2 project to point at the location of this project on disk, e.g. `source: "tmsource:///home/osm/mbs-compatible.tm2source"`
