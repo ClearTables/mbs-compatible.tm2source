@@ -59,6 +59,35 @@ Layer:
         ) AS waterways
     properties:
       minzoom: 8
+  - id: aeroway
+    # both line and poly
+    <<: *extents
+    Datasource:
+      <<: *osm2pgsql
+      table: |-
+        (SELECT
+            way,
+            aeroway AS type
+          FROM aeroway_line
+        ) AS admin_line
+    properties:
+      minzoom: 2
+  - id: admin
+    geometry: linestring
+    <<: *extents
+    Datasource:
+      <<: *osm2pgsql
+      table: |-
+        (SELECT
+            way,
+            level admin_level,
+            0 AS maritime,
+            0 AS disputed
+          FROM admin_line
+          WHERE level BETWEEN 2 AND 4
+        ) AS admin_line
+    properties:
+      minzoom: 9
   - id: building
     geometry: polygon
     <<: *extents
