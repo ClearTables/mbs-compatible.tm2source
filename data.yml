@@ -88,6 +88,30 @@ Layer:
         ) AS admin_line
     properties:
       minzoom: 9
+  - id: barrier_line
+    geometry: linestring
+    <<: *extents
+    Datasource:
+      <<: *osm2pgsql
+      table: |-
+        (SELECT
+            way,
+            CASE barrier
+              WHEN 'fence' THEN 'fence'
+              WHEN 'wall' THEN 'fence'
+              WHEN 'hedge' THEN 'hedge'
+            END AS class
+          FROM barrier_line
+          WHERE barrier IN ('fence', 'wall', 'hedge')
+        UNION ALL
+        SELECT
+            way,
+            'cliff' AS class
+          FROM landform_line
+          WHERE landform = 'cliff'
+        ) AS barrier_line
+    properties:
+      minzoom: 12
   - id: building
     geometry: polygon
     <<: *extents
